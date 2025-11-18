@@ -74,13 +74,16 @@ RCT_REMAP_METHOD(exitApp,
         @try {
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             NSDictionary *sanitizedData = [self sanitizeForUserDefaults:data];
-            [userDefaults setObject:sanitizedData forKey:@"pkb_exit_data"];
+            [userDefaults setObject:sanitizedData forKey:@"pkb_exit_data"]; // need to change name
             [userDefaults synchronize];
 
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"PeekabooConnectExit"
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PeekabooConnectExit" // need to change name
                                                                 object:nil
                                                               userInfo:sanitizedData];
 
+            if ([navigationExitType isEqualToString:@"STAY"]) {
+                return;
+            }
             if ([navigationExitType isEqualToString:@"POP"]) {
                 [[self currentTopViewController] popoverPresentationController];
                 return;
